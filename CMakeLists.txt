@@ -40,7 +40,10 @@ enable_testing()
 
 # Busca recursivamente os arquivos .cpp dentro da pasta src.
 # Eles formarão a biblioteca com a lógica central da rede neural.
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
+# Busca os arquivos .cpp da implementação, somente dentro de src/.
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
+)
 
 # Remove main.cpp dessa lista porque ele terá um executável próprio.
 # Isso evita incluir a função main em uma biblioteca compartilhada com os testes.
@@ -48,7 +51,11 @@ list(FILTER SOURCES EXCLUDE REGEX ".*/main\\.cpp$")
 
 # Cria uma biblioteca com a implementação central do projeto.
 # Ela pode ser reutilizada tanto pelo programa principal quanto pelos testes.
-add_library(neural_core ${SOURCES})
+# Biblioteca com apenas a implementação da rede neural.
+add_library(neural_core ${SOURCES}
+        include/nn/Tensor.hpp
+        src/nn/Tensor.cpp
+)
 
 # Cria o executável principal a partir do arquivo que contém main().
 add_executable(NeuralNetwork src/main.cpp)
