@@ -11,7 +11,7 @@ Tensor::Tensor(std::vector<float> data): _data{data}, _shape{data.size()}, _stri
 Tensor::Tensor(std::vector<std::vector<float>> data):  _shape{data.size(), data.size()}, _stride{data.size(), 1} {
     // checking if dimension match
     std::size_t num_expected_columns = data.size();
-    for (std::size_t i = 0; i < num_expected_columns; ++i) {
+    for (std::size_t i = 0; i < num_expected_columns; ++i) { // it's waiting for square matrix...
         if (data[i].size() != num_expected_columns) {
             throw std::invalid_argument("Dimensions do not match");
         }
